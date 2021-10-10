@@ -43,13 +43,18 @@ public:
 
         set_physx_ptr(Physics::get().physics->createScene(sceneDesc));
     }
+    auto fetch_results(bool block) {
+        return get_physx_ptr()->fetchResults(block);
+    }
 
     /** @brief Simulate scene for given amount of time dt and fetch results with blocking. */
-    void simulate(float dt) {
+    auto simulate(float dt, bool block) {
         get_physx_ptr()->simulate(dt);
-        get_physx_ptr()->fetchResults(true);
+        auto results = 0;//fetch_results(block);
         simulation_time += dt;
+        return results;
     }
+
 
     void add_actor(RigidActor actor) {
         get_physx_ptr()->addActor(*actor.get_physx_ptr());
@@ -80,6 +85,11 @@ public:
         std::vector<physx::PxAggregate *> aggs(n);
         get_physx_ptr()->getAggregates(&aggs[0], n);
         return from_vector_of_physx_ptr<Aggregate>(aggs);
+    }
+
+
+    void set_gravity(const physx::PxVec3 &acceleration) {
+        get_physx_ptr()->setGravity(acceleration);
     }
 
 public:

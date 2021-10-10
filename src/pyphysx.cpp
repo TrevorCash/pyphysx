@@ -135,7 +135,11 @@ PYBIND11_MODULE(pyphysx, m) {
                  arg("gpu_dynamic_allocation_scale") = 1.
             )
             .def("simulate", &Scene::simulate,
-                 arg("dt") = 1. / 60.
+                 arg("dt") = 1. / 60.,
+                 arg("block") = true
+            )
+            .def("fetch_results", &Scene::fetch_results,
+                 arg("block") = true
             )
             .def("add_actor", &Scene::add_actor,
                  arg("actor")
@@ -145,8 +149,14 @@ PYBIND11_MODULE(pyphysx, m) {
             .def("add_aggregate", &Scene::add_aggregate,
                  arg("agg")
             )
-            .def("get_aggregates", &Scene::get_aggregates)
+            .def("get_aggregates", &Scene::get_aggregates)            
+
+            .def("set_gravity", &Scene::set_gravity,
+               arg("acceleration")
+            )
             .def_readwrite("simulation_time", &Scene::simulation_time);
+
+
 
     py::class_<Aggregate>(m, "Aggregate")
             .def(py::init<size_t, bool>(),

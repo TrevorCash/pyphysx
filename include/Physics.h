@@ -67,7 +67,7 @@ private:
         auto params = PxCookingParams(PxTolerancesScale());
         params.buildGPUData = true;
         cooking = PxCreateCooking(PX_PHYSICS_VERSION, *foundation, params);
-        dispatcher = physx::PxDefaultCpuDispatcherCreate(0);
+        dispatcher = physx::PxDefaultCpuDispatcherCreate(64);
     }
 
     void release_all_scenes() {
